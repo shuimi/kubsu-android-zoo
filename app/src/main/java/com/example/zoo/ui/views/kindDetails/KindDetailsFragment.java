@@ -82,7 +82,6 @@ public class KindDetailsFragment extends Fragment {
         });
         mBinding.kindDetailsSaveButton.setOnClickListener((view) -> {
             mKind.kindName = mBinding.kindNameEditText.getText().toString();
-            mKind.aviaryNumber = Integer.parseInt(mBinding.aviaryNumberEditText.getText().toString());
 
             if (currentKindId == 0) {
                 mKindDao.insert(mKind);
@@ -137,18 +136,11 @@ public class KindDetailsFragment extends Fragment {
 
         mBinding.kindNameEditText.setText(mKind.kindName);
 
-        if (mKind.aviaryNumber != null)
-            mBinding.aviaryNumberEditText.setText(mKind.aviaryNumber + "");
-
-        mBinding.includedToolBar.titleTextView.setText("Вольер");
+        mBinding.includedToolBar.titleTextView.setText("Виды в зоопарке");
         mBinding.includedToolBar.showDrawerButton.setOnClickListener(v -> {
             DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawerLayout);
             drawerLayout.open();
         });
-
-
-
-
 
         KindDetailsFragmentDirections
                 .ActionKindDetailsFragmentToAnimalDetailsFragment action = KindDetailsFragmentDirections
@@ -199,7 +191,6 @@ public class KindDetailsFragment extends Fragment {
                 .setTitle("Сохранить вольер?")
                 .setPositiveButton("Сохранить и выйти", (dialog, which) -> {
                     mKind.kindName = mBinding.kindNameEditText.getText().toString();
-                    mKind.aviaryNumber = Integer.parseInt(mBinding.aviaryNumberEditText.getText().toString());
 
                     if (currentKindId == 0) {
                         mKindDao.insert(mKind);

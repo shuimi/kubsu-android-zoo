@@ -92,6 +92,8 @@ public class AnimalDetailsFragment extends Fragment {
         });
 
         mBinding.animalNameEditText.setText(mAnimal.name);
+        if (mAnimal.aviary != null)
+            mBinding.animalAviaryNumberEditText.setText(mAnimal.aviary);
 
         mBinding.includedToolBar.titleTextView.setText("Животное");
 
@@ -109,6 +111,7 @@ public class AnimalDetailsFragment extends Fragment {
 
     private void commitAnimal() {
         mAnimal.name = mBinding.animalNameEditText.getText().toString();
+        mAnimal.aviary = Integer.parseInt(mBinding.animalAviaryNumberEditText.getText().toString());
 
         if (currentAnimalId == 0) {
             mAnimalDao.insert(mAnimal);

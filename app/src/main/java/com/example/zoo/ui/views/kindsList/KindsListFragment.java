@@ -91,7 +91,7 @@ public class KindsListFragment extends Fragment {
 
         if (currentZooId != 0) {
             ZooEntity zoo = mZooDao.findById(currentZooId).get();
-            mBinding.includedToolBar.titleTextView.setText("Вольеры в зоопарке \n" + zoo.name);
+            mBinding.includedToolBar.titleTextView.setText("Виды в зоопарке \n" + zoo.name);
         } else {
             mBinding.includedToolBar.titleTextView.setText("Выберите зоопарк");
         }

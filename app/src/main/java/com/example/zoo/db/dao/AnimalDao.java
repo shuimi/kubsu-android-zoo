@@ -37,4 +37,7 @@ public interface AnimalDao {
 
     @Query("DELETE FROM animals WHERE id = :id")
     void delete(Long id);
+
+    @Query("SELECT * FROM animals WHERE kindId = :kindId")
+    List<AnimalEntity> findAllByKindId(Long kindId);
 }

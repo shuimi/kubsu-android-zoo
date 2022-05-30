@@ -1,4 +1,4 @@
-package com.example.zoo.ui.views.kindDetails;
+package com.example.zoo.ui.views.kindsList;
 
 import android.content.Context;
 import android.os.Build;
@@ -14,25 +14,16 @@ import com.example.zoo.db.entities.AnimalEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class AnimalsListAdapter extends BaseAdapter {
+public class AnimalsSubListAdapter extends BaseAdapter {
 
     private final Context context;
-    private final Consumer<Long> onEditAction;
-    private final Consumer<Long> onDeleteAction;
 
     private final List<AnimalEntity> mAnimalsList = new ArrayList<>();
 
-    public AnimalsListAdapter(
-            Context context,
-            Consumer<Long> onEditAction,
-            Consumer<Long> onDeleteAction
-    ) {
+    public AnimalsSubListAdapter(Context context) {
         this.context = context;
-        this.onEditAction = onEditAction;
-        this.onDeleteAction = onDeleteAction;
     }
 
     @Override
@@ -62,18 +53,10 @@ public class AnimalsListAdapter extends BaseAdapter {
         } else {
             animalListItemBinding = AnimalListItemBinding.bind(convertView);
         }
+
         AnimalEntity animal = (AnimalEntity) getItem(position);
-
         animalListItemBinding.animalName.setText(animal.name);
-        if (animal.aviary != null) {
-            animalListItemBinding.aviaryNumber.setText(animal.aviary + "");
-        }
-
-        animalListItemBinding.animalEditButton
-                .setOnClickListener(v -> onEditAction.accept(animal.id));
-        animalListItemBinding.animalDeleteButton
-                .setOnClickListener(v -> onDeleteAction.accept(animal.id));
-
+        animalListItemBinding.aviaryNumber.setText(animal.aviary + "");
         return animalListItemBinding.getRoot();
     }
 

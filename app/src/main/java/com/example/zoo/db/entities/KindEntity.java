@@ -20,7 +20,4 @@ public class KindEntity {
 
     @ColumnInfo(name = "kind_name")
     public String kindName;
-
-    @ColumnInfo(name = "aviary_number")
-    public Integer aviaryNumber;
 }

@@ -2,6 +2,7 @@ package com.example.zoo.ui.views.kindsList;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,13 @@ import android.widget.BaseAdapter;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.zoo.R;
+import com.example.zoo.ZooApp;
 import com.example.zoo.databinding.KindListItemBinding;
+import com.example.zoo.db.dao.AnimalDao;
+import com.example.zoo.db.entities.AnimalEntity;
 import com.example.zoo.db.entities.KindEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -28,10 +29,7 @@ public class KindsListAdapter extends BaseAdapter {
 
     private final List<KindEntity> mKindsList = new ArrayList<>();
 
-    private SortField sortField = SortField.AVIARY_NUMBER;
-
-    private final Comparator<String> nullsLastStringComparator = Comparator
-            .nullsLast((Comparator<String>) String::compareTo);
+    AnimalsSubListAdapter animalsListAdapter;
 
     public KindsListAdapter(
             Context context,
@@ -41,6 +39,7 @@ public class KindsListAdapter extends BaseAdapter {
         this.context = context;
         this.onEditAction = onEditAction;
         this.onDeleteAction = onDeleteAction;
+        this.animalsListAdapter = new AnimalsSubListAdapter(context);
     }
 
     @Override
@@ -61,77 +60,40 @@ public class KindsListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        KindListItemBinding groupListItemBinding;
+        KindListItemBinding kindListItemBinding;
 
         if (convertView == null) {
-            groupListItemBinding = KindListItemBinding.inflate(
+            kindListItemBinding = KindListItemBinding.inflate(
                     LayoutInflater.from(context), parent, false
             );
         } else {
-            groupListItemBinding = KindListItemBinding.bind(convertView);
+            kindListItemBinding = KindListItemBinding.bind(convertView);
         }
+
         KindEntity kind = (KindEntity) getItem(position);
 
-        groupListItemBinding.kindName.setText(kind.kindName);
-        groupListItemBinding.aviaryNumber.setText(kind.aviaryNumber + "");
+        kindListItemBinding.kindName.setText(kind.kindName);
+        kindListItemBinding.animalsListPreview.setAdapter(animalsListAdapter);
 
-        groupListItemBinding.kindEditButton
+        kindListItemBinding.kindEditButton
                 .setOnClickListener(v -> onEditAction.accept(kind.id));
-        groupListItemBinding.kindDeleteButton.
+        kindListItemBinding.kindDeleteButton.
                 setOnClickListener(v -> onDeleteAction.accept(kind.id));
 
-        groupListItemBinding.kindNameLayout
-                .setOnLongClickListener(view -> {
-                    handleSortAction(view);
-                    return true;
-                });
-
-        groupListItemBinding.kindNumberLayout
-                .setOnLongClickListener(view -> {
-                    handleSortAction(view);
-                    return true;
-                });
-
-        return groupListItemBinding.getRoot();
+        return kindListItemBinding.getRoot();
     }
 
     public void updateKindsList(List<KindEntity> kindsList) {
         this.mKindsList.clear();
         this.mKindsList.addAll(kindsList);
-        this.sortKinds();
-        notifyDataSetChanged();
-    }
 
-    private void handleSortAction(View view) {
-        switch (view.getId()) {
-            case R.id.kindNameLayout: {
-                sortField = SortField.KIND_NAME;
-                break;
-            }
-            case R.id.kindNumberLayout: {
-                sortField = SortField.AVIARY_NUMBER;
-                break;
-            }
+        AnimalDao animals = ZooApp.appDatabase.getAnimalDao();
+
+        for (KindEntity k : mKindsList) {
+            animalsListAdapter
+                    .updateAnimalsList(animals.findAllByKindId(k.id));
+            notifyDataSetChanged();
         }
-        sortKinds();
-        notifyDataSetChanged();
     }
 
-    private void sortKinds() {
-        Collections.sort(this.mKindsList, (o1, o2) -> {
-            switch (sortField) {
-                case KIND_NAME: {
-                    return nullsLastStringComparator.compare(o1.kindName, o2.kindName);
-                }
-                case AVIARY_NUMBER: {
-                    return o1.aviaryNumber.compareTo(o2.aviaryNumber);
-                }
-            }
-            return 0;
-        });
-    }
-
-    private enum SortField {
-        KIND_NAME, AVIARY_NUMBER;
-    }
 }

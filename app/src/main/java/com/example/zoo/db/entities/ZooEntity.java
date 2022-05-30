@@ -12,4 +12,7 @@ public class ZooEntity {
 
     @ColumnInfo(name = "name")
     public String name;
+
+    @ColumnInfo(name = "aviary_number")
+    public Integer aviaryNumber;
 }

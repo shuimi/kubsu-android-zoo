@@ -21,4 +21,7 @@ public class AnimalEntity {
 
     @ColumnInfo(name = "name")
     public String name;
+
+    @ColumnInfo(name = "aviary")
+    public Integer aviary;
 }
