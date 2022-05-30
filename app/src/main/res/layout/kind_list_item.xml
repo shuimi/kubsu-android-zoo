@@ -16,16 +16,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginVertical="7dp"
             android:layout_marginStart="10dp"
-            android:text="Вальер:"
+            android:text="Вольер:"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/kindName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginVertical="7dp"
             android:layout_marginStart="10dp"
             android:text="Крокодилы"
             android:textStyle="bold" />
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginBottom="7dp"
             android:layout_marginStart="10dp"
             android:text="Номер вальера: " />
 
@@ -51,7 +51,7 @@
             android:id="@+id/aviaryNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginBottom="7dp"
             android:layout_marginStart="10dp"
             android:text="12" />
 
@@ -63,9 +63,9 @@
         android:layout_height="48dp"
         android:layout_marginHorizontal="5dp"
         android:backgroundTint="#FFFFFF"
-        android:src="@android:drawable/ic_delete"
+        android:src="@drawable/ic_baseline_delete_forever_24"
         app:layout_constraintBottom_toBottomOf="@id/kindNameLayout"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/kindEditButton"
         app:layout_constraintTop_toTopOf="@id/kindNameLayout" />
 
     <ImageButton
@@ -74,9 +74,9 @@
         android:layout_height="48dp"
         android:layout_marginHorizontal="5dp"
         android:backgroundTint="#FFFFFF"
-        android:src="@android:drawable/ic_menu_view"
+        android:src="@drawable/ic_baseline_edit_24"
         app:layout_constraintBottom_toBottomOf="@id/kindNameLayout"
-        app:layout_constraintEnd_toStartOf="@id/kindDeleteButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/kindNameLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

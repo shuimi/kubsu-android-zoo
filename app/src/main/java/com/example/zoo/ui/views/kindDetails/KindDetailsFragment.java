@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -57,26 +58,49 @@ public class KindDetailsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if (currentZooId == 0){
+        if (currentZooId == 0) {
             return;
         }
-        mBinding.includedToolBar.myToolbar.inflateMenu(R.menu.kinds_list_menu);
+        mBinding.includedToolBar.myToolbar.inflateMenu(R.menu.kind_details_menu);
         mBinding.includedToolBar.myToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case R.id.addKindMenuOption: {
-                    showAddKindModal();
-                    return true;
-                }
-                case R.id.deleteZooMenuOption: {
-                    showDeleteZooModal();
+                case R.id.closeMenuOption: {
+                    closeKindDetailsModal();
                     return true;
                 }
                 default:
                     return super.onOptionsItemSelected(item);
             }
         });
+        mBinding.kindDetailsSaveButton.setOnClickListener((view) -> {
+            mKind.kindName = mBinding.kindNameEditText.getText().toString();
+            mKind.aviaryNumber = Integer.parseInt(mBinding.aviaryNumberEditText.getText().toString());
 
+            if (currentKindId == 0) {
+                mKindDao.insert(mKind);
+            } else {
+                mKindDao.save(mKind);
+            }
+
+            Navigation
+                    .findNavController(requireActivity(), R.id.navHostFragment)
+                    .navigate(KindsListFragmentDirections.actionGlobalKindsListFragment(currentZooId));
+        });
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        requireActivity().getOnBackPressedDispatcher()
+                .addCallback(
+                        getViewLifecycleOwner(),
+                        new OnBackPressedCallback(true) {
+                            @Override
+                            public void handleOnBackPressed() {
+                                closeKindDetailsModal();
+                            }
+                        }
+                );
     }
 
     private void showAddKindModal() {
@@ -127,7 +151,9 @@ public class KindDetailsFragment extends Fragment {
                 });
 
         mBinding.kindNameEditText.setText(mKind.kindName);
-        mBinding.aviaryNumberEditText.setText(mKind.aviaryNumber.intValue());
+
+        if (mKind.aviaryNumber != null)
+            mBinding.aviaryNumberEditText.setText(mKind.aviaryNumber + "");
 
         mBinding.includedToolBar.titleTextView.setText("Вольер");
         mBinding.includedToolBar.showDrawerButton.setOnClickListener(v -> {
@@ -142,7 +168,7 @@ public class KindDetailsFragment extends Fragment {
         mBinding = null;
     }
 
-    private void closeGroupDetailsModal() {
+    private void closeKindDetailsModal() {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Сохранить вольер?")
                 .setPositiveButton("Сохранить и выйти", (dialog, which) -> {

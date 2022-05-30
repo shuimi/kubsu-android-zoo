@@ -73,7 +73,7 @@ public class KindsListAdapter extends BaseAdapter {
         KindEntity kind = (KindEntity) getItem(position);
 
         groupListItemBinding.kindName.setText(kind.kindName);
-        groupListItemBinding.aviaryNumber.setText(kind.aviaryNumber);
+        groupListItemBinding.aviaryNumber.setText(kind.aviaryNumber + "");
 
         groupListItemBinding.kindEditButton
                 .setOnClickListener(v -> onEditAction.accept(kind.id));

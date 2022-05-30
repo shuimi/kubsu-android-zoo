@@ -39,11 +39,9 @@
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim">
         <argument
-            android:name="facultyId"
-            app:argType="long" />
-        <argument
             android:name="zooId"
-            android:defaultValue="0L" />
+            app:argType="long"
+            />
     </action>
     <fragment
         android:id="@+id/kindDetailsFragment"

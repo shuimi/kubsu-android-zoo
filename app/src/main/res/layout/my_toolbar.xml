@@ -18,21 +18,21 @@
 
             <ImageButton
                 android:id="@+id/showDrawerButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:backgroundTint="#CACACA"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:backgroundTint="#FFFFFF"
                 android:gravity="start"
-                android:src="@android:drawable/ic_menu_sort_by_size" />
+                android:src="@drawable/ic_baseline_menu_open_24" />
 
             <TextView
                 android:id="@+id/titleTextView"
-                android:textSize="25dp"
-                android:layout_marginStart="20dp"
-                android:textStyle="bold"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Title text"/>
+                android:layout_marginStart="12dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:text="Заголовок"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
