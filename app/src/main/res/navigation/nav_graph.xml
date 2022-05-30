@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/kindsListFragment">
+
+    <fragment
+        android:id="@+id/kindsListFragment"
+        android:name="com.example.zoo.ui.views.kindsList.KindsListFragment"
+        android:label="KindsListFragment"
+        tools:layout="@layout/fragment_kinds_list"
+        >
+        <argument
+            android:name="zooId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_kindsListFragment_to_kindDetailsFragment"
+            app:destination="@id/kindDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="kindId"
+                android:defaultValue="0L" />
+            <argument
+                android:name="zooId"
+                android:defaultValue="0L" />
+        </action>
+    </fragment>
+    <action
+        android:id="@+id/action_global_kindsListFragment"
+        app:destination="@id/kindsListFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:launchSingleTop="false"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        <argument
+            android:name="facultyId"
+            app:argType="long" />
+        <argument
+            android:name="zooId"
+            android:defaultValue="0L" />
+    </action>
+    <fragment
+        android:id="@+id/kindDetailsFragment"
+        android:name="com.example.zoo.ui.views.kindDetails.KindDetailsFragment"
+        android:label="KindDetailsFragment"
+        tools:layout="@layout/fragment_kind_details"
+        >
+        <argument
+            android:name="kindId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <argument
+            android:name="zooId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+</navigation>
