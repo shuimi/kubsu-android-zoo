@@ -57,5 +57,26 @@
             android:name="zooId"
             android:defaultValue="0L"
             app:argType="long" />
+        <action
+            android:id="@+id/action_kindDetailsFragment_to_animalDetailsFragment"
+            app:destination="@id/animalDetailsFragment" >
+            <argument
+                android:name="animalId"
+                android:defaultValue="0L" />
+            <argument
+                android:name="kindId"
+                android:defaultValue="0L" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/animalDetailsFragment"
+        android:name="com.example.zoo.ui.views.animalDetails.AnimalDetailsFragment"
+        android:label="AnimalDetailsFragment" >
+        <argument
+            android:name="animalId"
+            app:argType="long" />
+        <argument
+            android:name="kindId"
+            app:argType="long" />
     </fragment>
 </navigation>

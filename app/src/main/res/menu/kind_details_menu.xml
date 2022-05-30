@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/createAnimalOption"
+        android:icon="@drawable/ic_baseline_add_box_24"
+        android:title="Создать"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/closeMenuOption"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:icon="@drawable/ic_baseline_clear_24"
         android:title="Close"
         app:showAsAction="ifRoom" />
 

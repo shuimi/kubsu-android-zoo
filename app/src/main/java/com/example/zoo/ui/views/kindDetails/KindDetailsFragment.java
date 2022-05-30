@@ -20,13 +20,17 @@ import androidx.navigation.Navigation;
 import com.example.zoo.R;
 import com.example.zoo.ZooApp;
 import com.example.zoo.databinding.FragmentKindDetailsBinding;
+import com.example.zoo.db.dao.AnimalDao;
 import com.example.zoo.db.dao.KindDao;
 import com.example.zoo.db.dao.ZooDao;
 import com.example.zoo.db.entities.KindEntity;
+import com.example.zoo.db.entities.ZooEntity;
+import com.example.zoo.ui.views.kindsList.KindsListAdapter;
 import com.example.zoo.ui.views.kindsList.KindsListFragmentDirections;
 
 public class KindDetailsFragment extends Fragment {
 
+    private final AnimalDao mAnimalDao = ZooApp.appDatabase.getAnimalDao();
     private final KindDao mKindDao = ZooApp.appDatabase.getKindDao();
     private final ZooDao mZooDao = ZooApp.appDatabase.getZooDao();
 
@@ -68,6 +72,10 @@ public class KindDetailsFragment extends Fragment {
                     closeKindDetailsModal();
                     return true;
                 }
+                case R.id.createAnimalOption: {
+                    createAnimal();
+                    return true;
+                }
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -89,6 +97,18 @@ public class KindDetailsFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    public void createAnimal(){
+        KindDetailsFragmentDirections
+                .ActionKindDetailsFragmentToAnimalDetailsFragment action = KindDetailsFragmentDirections
+                .actionKindDetailsFragmentToAnimalDetailsFragment();
+        action.setAnimalId(0);
+        action.setKindId(currentKindId);
+
+        Navigation
+                .findNavController(requireActivity(), R.id.navHostFragment)
+                .navigate(action);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         requireActivity().getOnBackPressedDispatcher()
@@ -101,41 +121,6 @@ public class KindDetailsFragment extends Fragment {
                             }
                         }
                 );
-    }
-
-    private void showAddKindModal() {
-        KindsListFragmentDirections
-                .ActionKindsListFragmentToKindDetailsFragment action = KindsListFragmentDirections
-                .actionKindsListFragmentToKindDetailsFragment();
-
-        action.setZooId(currentZooId);
-
-        Navigation
-                .findNavController(requireActivity(), R.id.navHostFragment)
-                .navigate(action);
-    }
-
-    private void showDeleteZooModal() {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Удалить зоопарк?")
-                .setPositiveButton("Так точно", (dialog, which) -> {
-                    mZooDao.delete(currentZooId);
-                    Navigation
-                            .findNavController(requireActivity(), R.id.navHostFragment)
-                            .navigate(KindsListFragmentDirections.actionGlobalKindsListFragment(0));
-                })
-                .setNegativeButton("Никак нет", (dialog, which) -> dialog.cancel())
-                .show();
-    }
-
-    private void showDeleteGroupModal(Long groupId) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Удалить вольер?")
-                .setPositiveButton("Так точно", (dialog, which) -> {
-                    mKindDao.delete(groupId);
-                })
-                .setNegativeButton("Никак нет", (dialog, which) -> dialog.cancel())
-                .show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -160,6 +145,47 @@ public class KindDetailsFragment extends Fragment {
             DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawerLayout);
             drawerLayout.open();
         });
+
+
+
+
+
+        KindDetailsFragmentDirections
+                .ActionKindDetailsFragmentToAnimalDetailsFragment action = KindDetailsFragmentDirections
+                .actionKindDetailsFragmentToAnimalDetailsFragment();
+
+        action.setKindId(currentKindId);
+
+        AnimalsListAdapter animalsListAdapter = new AnimalsListAdapter(
+                getContext(),
+                animalId -> {
+                    action.setAnimalId(animalId);
+                    Navigation
+                            .findNavController(requireActivity(), R.id.navHostFragment)
+                            .navigate(action);
+                },
+                this::showDeleteAnimalModal
+        );
+        mBinding.animalsListView.setAdapter(animalsListAdapter);
+
+        mAnimalDao.findAllByKindIdReactive(currentKindId)
+                .observe(this, animalsListAdapter::updateAnimalsList);
+
+        mBinding.includedToolBar.showDrawerButton.setOnClickListener(v -> {
+            DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawerLayout);
+            drawerLayout.open();
+        });
+
+    }
+
+    public void showDeleteAnimalModal(long currentAnimalId){
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Удалить животное?")
+                .setPositiveButton("Так точно", (dialog, which) -> {
+                    mAnimalDao.delete(currentAnimalId);
+                })
+                .setNegativeButton("Никак нет", (dialog, which) -> dialog.cancel())
+                .show();
     }
 
     @Override
