@@ -32,6 +32,7 @@ public class KindsListFragment extends Fragment {
     private final KindDao mKindDao = ZooApp.appDatabase.getKindDao();
 
     private FragmentKindsListBinding mBinding;
+    MainRecyclerAdapter mainRecyclerAdapter;
 
     RecyclerView mRecyclerView;
 
@@ -55,12 +56,12 @@ public class KindsListFragment extends Fragment {
 
         mRecyclerView = mBinding.getRoot().findViewById(R.id.mainRecyclerView);
 
-        mRecyclerView.addItemDecoration(
-                new DividerItemDecoration(
-                        mBinding.getRoot().getContext(),
-                        DividerItemDecoration.VERTICAL
-                )
-        );
+//        mRecyclerView.addItemDecoration(
+//                new DividerItemDecoration(
+//                        mBinding.getRoot().getContext(),
+//                        DividerItemDecoration.VERTICAL
+//                )
+//        );
 
         return mBinding.getRoot();
     }
@@ -98,6 +99,7 @@ public class KindsListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         KindsListFragmentDirections
                 .ActionKindsListFragmentToKindDetailsFragment action = KindsListFragmentDirections
                 .actionKindsListFragmentToKindDetailsFragment();
@@ -111,7 +113,7 @@ public class KindsListFragment extends Fragment {
             mBinding.includedToolBar.titleTextView.setText("Выберите зоопарк");
         }
 
-        MainRecyclerAdapter mainRecyclerAdapter = new MainRecyclerAdapter(
+        mainRecyclerAdapter = new MainRecyclerAdapter(
                 getContext(),
                 currentZooId,
                 kindId -> {
@@ -122,24 +124,7 @@ public class KindsListFragment extends Fragment {
                 },
                 this::showDeleteKindModal
         );
-
         mRecyclerView.setAdapter(mainRecyclerAdapter);
-
-
-//        KindsListAdapter kindsListAdapter = new KindsListAdapter(
-//                getContext(),
-//                kindId -> {
-//                    action.setKindId(kindId);
-//                    Navigation
-//                            .findNavController(requireActivity(), R.id.navHostFragment)
-//                            .navigate(action);
-//                },
-//                this::showDeleteKindModal
-//        );
-//        mBinding.kindsListView.setAdapter(kindsListAdapter);
-
-//        mKindDao.findAllByZooIdReactive(currentZooId)
-//                .observe(this, kindsListAdapter::updateKindsList);
 
         mKindDao.findAllByZooIdReactive(currentZooId)
                 .observe(this, mainRecyclerAdapter::updateKindsList);

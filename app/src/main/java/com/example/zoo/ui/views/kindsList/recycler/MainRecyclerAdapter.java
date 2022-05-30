@@ -3,6 +3,7 @@ package com.example.zoo.ui.views.kindsList.recycler;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,11 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         KindEntity kind = mKindDao.findAll().get(position);
+        if (!kind.zooId.equals(currentZooId)) {
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            return;
+        }
 
         String kindName = kind.kindName;
         List<AnimalEntity> animals = mAnimalDao.findAllByKindId(kind.id);

@@ -125,6 +125,21 @@ public class AnimalDetailsFragment extends Fragment {
     }
 
     private void closeKindDetailsModal() {
+
+        if (mBinding.animalNameEditText.getText().toString().isEmpty() || mBinding.animalAviaryNumberEditText.getText().toString().isEmpty()) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Продолжить редактирование?")
+                    .setPositiveButton("Выйти без сохранения", (dialog, which) -> {
+                        Navigation
+                                .findNavController(requireActivity(), R.id.navHostFragment)
+                                .popBackStack();
+                        dialog.cancel();
+                    })
+                    .setNegativeButton("Продолжить", (dialog, which) -> {})
+                    .show();
+            return;
+        }
+
         new AlertDialog.Builder(requireContext())
                 .setTitle("Сохранить животное?")
                 .setPositiveButton("Сохранить и выйти", (dialog, which) -> {

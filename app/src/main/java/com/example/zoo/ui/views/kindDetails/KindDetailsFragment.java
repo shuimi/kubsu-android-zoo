@@ -186,7 +186,7 @@ public class KindDetailsFragment extends Fragment {
 
     private void closeKindDetailsModal() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Сохранить вольер?")
+                .setTitle("Сохранить вид?")
                 .setPositiveButton("Сохранить и выйти", (dialog, which) -> {
                     mKind.kindName = mBinding.kindNameEditText.getText().toString();
 
