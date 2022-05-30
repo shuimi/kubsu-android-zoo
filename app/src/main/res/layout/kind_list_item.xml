@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sectionView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/kindNameLayout"
         android:layout_width="0dp"
-        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@id/kindEditButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,12 +30,20 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="7dp"
             android:layout_marginStart="10dp"
-            android:textSize="18dp"
             android:text="Крокодилы"
-            android:textStyle="bold"
-            />
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/childRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/kindNameLayout" />
 
     <ImageButton
         android:id="@+id/kindDeleteButton"
@@ -60,10 +69,13 @@
 
     <ListView
         android:id="@+id/animalsListPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/kindNameLayout" />
+        app:layout_constraintTop_toBottomOf="@id/kindNameLayout">
+
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

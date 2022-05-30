@@ -28,6 +28,9 @@ public interface KindDao {
     @Query("SELECT * FROM kinds WHERE zooId = :zooId")
     LiveData<List<KindEntity>> findAllByZooIdReactive(Long zooId);
 
+    @Query("SELECT * FROM kinds WHERE zooId = :zooId")
+    List<KindEntity> findAllByZooId(Long zooId);
+
     @Insert(onConflict = IGNORE)
     void insert(KindEntity kind);
 

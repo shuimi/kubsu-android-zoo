@@ -24,8 +24,6 @@ import com.example.zoo.db.dao.AnimalDao;
 import com.example.zoo.db.dao.KindDao;
 import com.example.zoo.db.dao.ZooDao;
 import com.example.zoo.db.entities.KindEntity;
-import com.example.zoo.db.entities.ZooEntity;
-import com.example.zoo.ui.views.kindsList.KindsListAdapter;
 import com.example.zoo.ui.views.kindsList.KindsListFragmentDirections;
 
 public class KindDetailsFragment extends Fragment {

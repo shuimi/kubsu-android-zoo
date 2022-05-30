@@ -69,10 +69,13 @@ public class AnimalsListAdapter extends BaseAdapter {
             animalListItemBinding.aviaryNumber.setText(animal.aviary + "");
         }
 
-        animalListItemBinding.animalEditButton
+        animalListItemBinding.getRoot()
                 .setOnClickListener(v -> onEditAction.accept(animal.id));
-        animalListItemBinding.animalDeleteButton
-                .setOnClickListener(v -> onDeleteAction.accept(animal.id));
+        animalListItemBinding.getRoot()
+                .setOnLongClickListener(v -> {
+                    onDeleteAction.accept(animal.id);
+                    return false;
+                });
 
         return animalListItemBinding.getRoot();
     }

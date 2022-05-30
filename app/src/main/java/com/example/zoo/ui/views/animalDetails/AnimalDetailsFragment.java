@@ -93,7 +93,7 @@ public class AnimalDetailsFragment extends Fragment {
 
         mBinding.animalNameEditText.setText(mAnimal.name);
         if (mAnimal.aviary != null)
-            mBinding.animalAviaryNumberEditText.setText(mAnimal.aviary);
+            mBinding.animalAviaryNumberEditText.setText(mAnimal.aviary + "");
 
         mBinding.includedToolBar.titleTextView.setText("Животное");
 

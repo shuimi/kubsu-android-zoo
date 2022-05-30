@@ -15,6 +15,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.zoo.R;
 import com.example.zoo.ZooApp;
@@ -22,6 +24,7 @@ import com.example.zoo.databinding.FragmentKindsListBinding;
 import com.example.zoo.db.dao.KindDao;
 import com.example.zoo.db.dao.ZooDao;
 import com.example.zoo.db.entities.ZooEntity;
+import com.example.zoo.ui.views.kindsList.recycler.MainRecyclerAdapter;
 
 public class KindsListFragment extends Fragment {
 
@@ -29,6 +32,8 @@ public class KindsListFragment extends Fragment {
     private final KindDao mKindDao = ZooApp.appDatabase.getKindDao();
 
     private FragmentKindsListBinding mBinding;
+
+    RecyclerView mRecyclerView;
 
     private Long currentZooId;
 
@@ -47,6 +52,16 @@ public class KindsListFragment extends Fragment {
             @Nullable Bundle savedInstanceState
     ) {
         mBinding = FragmentKindsListBinding.inflate(inflater, container, false);
+
+        mRecyclerView = mBinding.getRoot().findViewById(R.id.mainRecyclerView);
+
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(
+                        mBinding.getRoot().getContext(),
+                        DividerItemDecoration.VERTICAL
+                )
+        );
+
         return mBinding.getRoot();
     }
 
@@ -95,8 +110,10 @@ public class KindsListFragment extends Fragment {
         } else {
             mBinding.includedToolBar.titleTextView.setText("Выберите зоопарк");
         }
-        KindsListAdapter kindsListAdapter = new KindsListAdapter(
+
+        MainRecyclerAdapter mainRecyclerAdapter = new MainRecyclerAdapter(
                 getContext(),
+                currentZooId,
                 kindId -> {
                     action.setKindId(kindId);
                     Navigation
@@ -105,10 +122,27 @@ public class KindsListFragment extends Fragment {
                 },
                 this::showDeleteKindModal
         );
-        mBinding.kindsListView.setAdapter(kindsListAdapter);
+
+        mRecyclerView.setAdapter(mainRecyclerAdapter);
+
+
+//        KindsListAdapter kindsListAdapter = new KindsListAdapter(
+//                getContext(),
+//                kindId -> {
+//                    action.setKindId(kindId);
+//                    Navigation
+//                            .findNavController(requireActivity(), R.id.navHostFragment)
+//                            .navigate(action);
+//                },
+//                this::showDeleteKindModal
+//        );
+//        mBinding.kindsListView.setAdapter(kindsListAdapter);
+
+//        mKindDao.findAllByZooIdReactive(currentZooId)
+//                .observe(this, kindsListAdapter::updateKindsList);
 
         mKindDao.findAllByZooIdReactive(currentZooId)
-                .observe(this, kindsListAdapter::updateKindsList);
+                .observe(this, mainRecyclerAdapter::updateKindsList);
 
         mBinding.includedToolBar.showDrawerButton.setOnClickListener(v -> {
             DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawerLayout);
@@ -154,7 +188,7 @@ public class KindsListFragment extends Fragment {
 
     private void showDeleteKindModal(Long kindId) {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Удалить вольер?")
+                .setTitle("Удалить вид?")
                 .setPositiveButton(
                         "Так точно",
                         (dialog, which) -> mKindDao.delete(kindId)
