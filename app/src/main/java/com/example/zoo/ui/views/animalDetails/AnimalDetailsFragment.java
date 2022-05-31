@@ -94,6 +94,14 @@ public class AnimalDetailsFragment extends Fragment {
         mBinding.animalNameEditText.setText(mAnimal.name);
         if (mAnimal.aviary != null)
             mBinding.animalAviaryNumberEditText.setText(mAnimal.aviary + "");
+        if (mAnimal.height != null)
+            mBinding.animalHeight.setText(mAnimal.height.toString());
+        if (mAnimal.weight != null)
+            mBinding.animalWeight.setText(mAnimal.weight.toString());
+        if (mAnimal.rarity != null)
+            mBinding.rare.setChecked(mAnimal.rarity);
+        if (mAnimal.food != null)
+            mBinding.animalFood.setText(mAnimal.food);
 
         mBinding.includedToolBar.titleTextView.setText("Животное");
 
@@ -111,7 +119,22 @@ public class AnimalDetailsFragment extends Fragment {
 
     private void commitAnimal() {
         mAnimal.name = mBinding.animalNameEditText.getText().toString();
-        mAnimal.aviary = Integer.parseInt(mBinding.animalAviaryNumberEditText.getText().toString());
+        if (mBinding.animalAviaryNumberEditText.getText() != null)
+            mAnimal.aviary = Integer.parseInt(mBinding.animalAviaryNumberEditText.getText().toString());
+        else mAnimal.aviary = 0;
+        if (mBinding.animalHeight.getText().toString().isEmpty()) {
+            mAnimal.height = 0F;
+        } else {
+            mAnimal.height = Float.parseFloat(mBinding.animalHeight.getText().toString() + "");
+        }
+        if (mBinding.animalWeight.getText().toString().isEmpty()) {
+            mAnimal.weight = 0F;
+        }
+        else {
+            mAnimal.weight = Float.parseFloat(mBinding.animalWeight.getText().toString() + "");
+        }
+        mAnimal.rarity = mBinding.rare.isChecked();
+        mAnimal.food = mBinding.animalFood.getText().toString();
 
         if (currentAnimalId == 0) {
             mAnimalDao.insert(mAnimal);
@@ -135,7 +158,8 @@ public class AnimalDetailsFragment extends Fragment {
                                 .popBackStack();
                         dialog.cancel();
                     })
-                    .setNegativeButton("Продолжить", (dialog, which) -> {})
+                    .setNegativeButton("Продолжить", (dialog, which) -> {
+                    })
                     .show();
             return;
         }

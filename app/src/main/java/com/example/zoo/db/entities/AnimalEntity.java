@@ -24,4 +24,16 @@ public class AnimalEntity {
 
     @ColumnInfo(name = "aviary")
     public Integer aviary;
+
+    @ColumnInfo(name = "rarity")
+    public Boolean rarity;
+
+    @ColumnInfo(name = "food")
+    public String food;
+
+    @ColumnInfo(name = "height")
+    public Float height;
+
+    @ColumnInfo(name = "weight")
+    public Float weight;
 }
